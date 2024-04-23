@@ -48,4 +48,16 @@ module.exports = (app) => {
 
   // Delete user
   route.delete('/:id', authenticationMiddleware, usersControllers.deleteUser);
+
+  // Pagination Function
+  app.get('/users', (req, res) => {
+    const page = req.query.page;
+    const limit = req.query.limit;
+
+    const IndexAwal = (page - 1) * limit; //StartIndex nya dibuat page-1 karena array dimulai 0. (page 1 - 0 = page 0)
+    const IndexAkhir = page * limit; //tidak diperlukan -1 karena ingin membuatnya menjadi end page atau page terakhir.
+
+    const resultUsers = users.slice(IndexAwal, IndexAkhir);
+    res.json(resultUsers);
+  });
 };
